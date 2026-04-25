@@ -1,28 +1,57 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import "../../styles/index.css"; 
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-            
+    const [list, setList] = useState(["Do the laundry", "Make dinner", "Clean the bathroom"]);
+    const [input, setInput] = useState("");
+    
+    function handleClick() {
+        setList([...list, input]);
+        setInput(""); 
+    }
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+    const deleteTask = (indexABorrar) => {
+        const listaActualizada = list.filter((chores, index) => {
+            return index !== indexABorrar; 
+        });
+        setList(listaActualizada);
+    };
+
+    return (
+        <div className="todo-container">
+            <h1 className="todo-title">To do list</h1>
+            
+            <div className="input-section">
+                <input 
+                    type="text"
+                    className="todo-input"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)} 
+                />
+                <button className="add-btn" onClick={() => handleClick()}>
+                    +
+                </button>
+            </div>
+            
+            <div className="list-section">
+                {
+                    list.map((chores, i) => {
+                        return (
+                            <div key={i} className="todo-item">
+                                <span>{chores}</span> 
+                                <button 
+                                    className="delete-btn"
+                                    onClick={() => deleteTask(i)} 
+                                >
+                                    X
+                                </button>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        </div>
+    );
 };
 
 export default Home;
